@@ -1,0 +1,37 @@
+{
+  "categories": [
+    {
+      "id": "clean_deals",
+      "title": "Clean Deals",
+      "products": [
+        {
+          "id": "lemon_cherry",
+          "name": "Lemon Cherry Gelato",
+          "image": "https://placehold.co/150",
+          "tags": ["Premium", "Indoor"],
+          "price": 50
+        },
+        {
+          "id": "peach_splash",
+          "name": "Peach Splash",
+          "image": "https://placehold.co/150",
+          "tags": ["Limited", "Static"],
+          "price": 45
+        }
+      ]
+    },
+    {
+      "id": "international",
+      "title": "International Selection",
+      "products": [
+        {
+          "id": "ten_co",
+          "name": "The Ten Co",
+          "image": "https://placehold.co/150",
+          "tags": ["Branded", "Multi Strain"],
+          "price": 70
+        }
+      ]
+    }
+  ]
+}
