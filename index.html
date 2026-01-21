@@ -1,20 +1,21 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-  <meta charset="UTF-8" />
-  <title>Exoticz Shop</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8">
+  <title>Mini Shop</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
 
   <style>
     :root {
-      --bg: #0b0b0b;
-      --card: #141414;
-      --border: #222;
-      --text: #fff;
-      --muted: #9b9b9b;
-      --accent: #00e59b;
+      --bg: #0f1115;
+      --panel: #181b21;
+      --card: #1f2430;
+      --text: #ffffff;
+      --sub: #a0a4b8;
+      --accent: #6cf2c2;
+      --border: #2a3040;
     }
 
     * { box-sizing: border-box; }
@@ -23,76 +24,78 @@
       margin: 0;
       background: var(--bg);
       color: var(--text);
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+      font-family: Inter, system-ui, sans-serif;
     }
 
-    .container {
+    .app {
       max-width: 720px;
       margin: auto;
-      padding: 16px;
+      padding: 18px;
     }
 
-    /* HEADER */
-    .shop-header {
-      margin-bottom: 20px;
+    /* TOP */
+    .top {
+      margin-bottom: 22px;
     }
 
-    .shop-header h1 {
+    .top h1 {
       margin: 0;
-      font-size: 26px;
+      font-size: 28px;
+      font-weight: 700;
     }
 
-    .shop-header .meta {
-      margin-top: 6px;
+    .top p {
+      margin: 6px 0 0;
+      color: var(--sub);
       font-size: 14px;
-      color: var(--muted);
     }
 
-    /* SECTION */
-    .section {
-      background: var(--card);
-      border-radius: 14px;
-      margin-bottom: 14px;
+    /* CATEGORY */
+    .category {
+      background: var(--panel);
+      border-radius: 16px;
+      margin-bottom: 16px;
       overflow: hidden;
+      border: 1px solid var(--border);
     }
 
-    .section-header {
-      padding: 14px 16px;
-      font-weight: 600;
-      cursor: pointer;
+    .category-head {
+      padding: 16px 18px;
       display: flex;
       justify-content: space-between;
       align-items: center;
+      cursor: pointer;
+      font-weight: 600;
     }
 
-    .section-header span {
-      color: var(--muted);
+    .category-head span {
+      color: var(--sub);
+      font-size: 13px;
     }
 
-    .section-content {
+    .category-body {
       display: none;
-      border-top: 1px solid var(--border);
+      padding: 14px;
     }
 
-    .section.open .section-content {
-      display: block;
+    .category.open .category-body {
+      display: grid;
+      gap: 14px;
     }
 
-    /* PRODUCT */
+    /* PRODUCT CARD */
     .product {
+      background: var(--card);
+      border-radius: 14px;
+      padding: 12px;
       display: flex;
       gap: 12px;
-      padding: 14px 16px;
-      border-bottom: 1px solid var(--border);
-    }
-
-    .product:last-child {
-      border-bottom: none;
+      align-items: center;
     }
 
     .product img {
-      width: 64px;
-      height: 64px;
+      width: 72px;
+      height: 72px;
       border-radius: 10px;
       object-fit: cover;
       background: #000;
@@ -107,102 +110,110 @@
       margin-bottom: 6px;
     }
 
-    .badges {
+    .tags {
       display: flex;
-      flex-wrap: wrap;
       gap: 6px;
+      flex-wrap: wrap;
     }
 
-    .badge {
-      background: #1f1f1f;
-      color: var(--muted);
-      font-size: 12px;
-      padding: 3px 8px;
-      border-radius: 6px;
+    .tag {
+      font-size: 11px;
+      padding: 4px 8px;
+      border-radius: 20px;
+      background: #2a3040;
+      color: var(--sub);
     }
 
-    .buy-btn {
-      margin-top: 10px;
-      background: var(--accent);
-      color: #000;
+    .action {
+      margin-top: 8px;
+    }
+
+    .btn {
+      width: 100%;
+      padding: 8px;
+      border-radius: 10px;
       border: none;
-      padding: 8px 12px;
-      border-radius: 8px;
       font-weight: 600;
       cursor: pointer;
+      background: var(--accent);
+      color: #000;
     }
 
-    .buy-btn:active {
+    .btn:active {
       transform: scale(0.97);
     }
   </style>
 </head>
 <body>
 
-<div class="container">
+<div class="app">
 
   <!-- HEADER -->
-  <div class="shop-header">
-    <h1>Exoticz’ Shop</h1>
-    <div class="meta">📍 UTR, NL</div>
+  <div class="top">
+    <h1>Exoticz Market</h1>
+    <p>Private Menu · UTR, NL</p>
   </div>
 
-  <!-- SECTION -->
-  <div class="section open">
-    <div class="section-header" onclick="toggle(this)">
-      CLEAN-UP DEALS 💸 <span>▲</span>
+  <!-- CATEGORY -->
+  <div class="category open">
+    <div class="category-head" onclick="toggle(this)">
+      Clean Deals
+      <span>offene Kategorie</span>
     </div>
-    <div class="section-content">
+
+    <div class="category-body">
 
       <div class="product">
-        <img src="https://placehold.co/100x100" />
+        <img src="https://placehold.co/150">
         <div class="product-info">
-          <div class="product-title">LEMON CHERRY GELATO 🍋🍒</div>
-          <div class="badges">
-            <div class="badge">MIDS / TOPS</div>
-            <div class="badge">🏆</div>
+          <div class="product-title">Lemon Cherry Gelato</div>
+          <div class="tags">
+            <div class="tag">Premium</div>
+            <div class="tag">Indoor</div>
           </div>
-          <button class="buy-btn" onclick="buy('lemon_cherry_gelato')">
-            Kaufen
-          </button>
+          <div class="action">
+            <button class="btn" onclick="buy('lemon_cherry')">Auswählen</button>
+          </div>
         </div>
       </div>
 
       <div class="product">
-        <img src="https://placehold.co/100x100" />
+        <img src="https://placehold.co/150">
         <div class="product-info">
-          <div class="product-title">PEACH SPLASH 🍑</div>
-          <div class="badges">
-            <div class="badge">STATIC SIFT</div>
-            <div class="badge">BEST TICKET</div>
+          <div class="product-title">Peach Splash</div>
+          <div class="tags">
+            <div class="tag">Limited</div>
+            <div class="tag">Static</div>
           </div>
-          <button class="buy-btn" onclick="buy('peach_splash')">
-            Kaufen
-          </button>
+          <div class="action">
+            <button class="btn" onclick="buy('peach_splash')">Auswählen</button>
+          </div>
         </div>
       </div>
 
     </div>
   </div>
 
-  <!-- ANOTHER SECTION -->
-  <div class="section">
-    <div class="section-header" onclick="toggle(this)">
-      Californianus 🇺🇸 <span>▼</span>
+  <!-- CATEGORY -->
+  <div class="category">
+    <div class="category-head" onclick="toggle(this)">
+      International Selection
+      <span>geschlossen</span>
     </div>
-    <div class="section-content">
+
+    <div class="category-body">
 
       <div class="product">
-        <img src="https://placehold.co/100x100" />
+        <img src="https://placehold.co/150">
         <div class="product-info">
-          <div class="product-title">THE TEN CO 🔥</div>
-          <div class="badges">
-            <div class="badge">BRANDED</div>
-            <div class="badge">3 STRAINS</div>
+          <div class="product-title">The Ten Co</div>
+          <div class="tags">
+            <div class="tag">Branded</div>
+            <div class="tag">Multi Strain</div>
           </div>
-          <button class="buy-btn" onclick="buy('the_ten_co')">
-            Kaufen
-          </button>
+          <div class="action">
+            <button class="btn" onclick="buy('the_ten_co')">Auswählen</button>
+          </div>
         </div>
       </div>
 
@@ -216,17 +227,17 @@
   tg.ready();
   tg.expand();
 
-  function toggle(header) {
-    const section = header.parentElement;
-    section.classList.toggle('open');
-    header.querySelector('span').textContent =
-      section.classList.contains('open') ? '▲' : '▼';
+  function toggle(el) {
+    const cat = el.parentElement;
+    cat.classList.toggle("open");
+    el.querySelector("span").textContent =
+      cat.classList.contains("open") ? "offene Kategorie" : "geschlossen";
   }
 
-  function buy(productId) {
+  function buy(id) {
     tg.sendData(JSON.stringify({
-      action: "buy",
-      product: productId
+      type: "select_product",
+      product_id: id
     }));
   }
 </script>
