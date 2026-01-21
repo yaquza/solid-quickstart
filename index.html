@@ -1,15 +1,235 @@
 <!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" content="#000000" />
-    <title>Solid App</title>
-  </head>
-  <body>
-    <noscript>You need to enable JavaScript to run this app.</noscript>
-    <div id="root"></div>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <title>Exoticz Shop</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <script src="/src/index.tsx" type="module"></script>
-  </body>
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+
+  <style>
+    :root {
+      --bg: #0b0b0b;
+      --card: #141414;
+      --border: #222;
+      --text: #fff;
+      --muted: #9b9b9b;
+      --accent: #00e59b;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+
+    .container {
+      max-width: 720px;
+      margin: auto;
+      padding: 16px;
+    }
+
+    /* HEADER */
+    .shop-header {
+      margin-bottom: 20px;
+    }
+
+    .shop-header h1 {
+      margin: 0;
+      font-size: 26px;
+    }
+
+    .shop-header .meta {
+      margin-top: 6px;
+      font-size: 14px;
+      color: var(--muted);
+    }
+
+    /* SECTION */
+    .section {
+      background: var(--card);
+      border-radius: 14px;
+      margin-bottom: 14px;
+      overflow: hidden;
+    }
+
+    .section-header {
+      padding: 14px 16px;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .section-header span {
+      color: var(--muted);
+    }
+
+    .section-content {
+      display: none;
+      border-top: 1px solid var(--border);
+    }
+
+    .section.open .section-content {
+      display: block;
+    }
+
+    /* PRODUCT */
+    .product {
+      display: flex;
+      gap: 12px;
+      padding: 14px 16px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .product:last-child {
+      border-bottom: none;
+    }
+
+    .product img {
+      width: 64px;
+      height: 64px;
+      border-radius: 10px;
+      object-fit: cover;
+      background: #000;
+    }
+
+    .product-info {
+      flex: 1;
+    }
+
+    .product-title {
+      font-weight: 600;
+      margin-bottom: 6px;
+    }
+
+    .badges {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .badge {
+      background: #1f1f1f;
+      color: var(--muted);
+      font-size: 12px;
+      padding: 3px 8px;
+      border-radius: 6px;
+    }
+
+    .buy-btn {
+      margin-top: 10px;
+      background: var(--accent);
+      color: #000;
+      border: none;
+      padding: 8px 12px;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .buy-btn:active {
+      transform: scale(0.97);
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+
+  <!-- HEADER -->
+  <div class="shop-header">
+    <h1>Exoticz’ Shop</h1>
+    <div class="meta">📍 UTR, NL</div>
+  </div>
+
+  <!-- SECTION -->
+  <div class="section open">
+    <div class="section-header" onclick="toggle(this)">
+      CLEAN-UP DEALS 💸 <span>▲</span>
+    </div>
+    <div class="section-content">
+
+      <div class="product">
+        <img src="https://placehold.co/100x100" />
+        <div class="product-info">
+          <div class="product-title">LEMON CHERRY GELATO 🍋🍒</div>
+          <div class="badges">
+            <div class="badge">MIDS / TOPS</div>
+            <div class="badge">🏆</div>
+          </div>
+          <button class="buy-btn" onclick="buy('lemon_cherry_gelato')">
+            Kaufen
+          </button>
+        </div>
+      </div>
+
+      <div class="product">
+        <img src="https://placehold.co/100x100" />
+        <div class="product-info">
+          <div class="product-title">PEACH SPLASH 🍑</div>
+          <div class="badges">
+            <div class="badge">STATIC SIFT</div>
+            <div class="badge">BEST TICKET</div>
+          </div>
+          <button class="buy-btn" onclick="buy('peach_splash')">
+            Kaufen
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ANOTHER SECTION -->
+  <div class="section">
+    <div class="section-header" onclick="toggle(this)">
+      Californianus 🇺🇸 <span>▼</span>
+    </div>
+    <div class="section-content">
+
+      <div class="product">
+        <img src="https://placehold.co/100x100" />
+        <div class="product-info">
+          <div class="product-title">THE TEN CO 🔥</div>
+          <div class="badges">
+            <div class="badge">BRANDED</div>
+            <div class="badge">3 STRAINS</div>
+          </div>
+          <button class="buy-btn" onclick="buy('the_ten_co')">
+            Kaufen
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+<script>
+  const tg = window.Telegram.WebApp;
+  tg.ready();
+  tg.expand();
+
+  function toggle(header) {
+    const section = header.parentElement;
+    section.classList.toggle('open');
+    header.querySelector('span').textContent =
+      section.classList.contains('open') ? '▲' : '▼';
+  }
+
+  function buy(productId) {
+    tg.sendData(JSON.stringify({
+      action: "buy",
+      product: productId
+    }));
+  }
+</script>
+
+</body>
 </html>
